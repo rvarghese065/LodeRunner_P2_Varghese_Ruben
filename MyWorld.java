@@ -11,7 +11,8 @@ public class MyWorld extends World
      GreenfootImage background;  
      Wall wall;  
      Ladder ladder; 
-     Bar bar; 
+     Bar bar;
+     Player player; 
     /**
      * Constructor for objects of class MyWorld.
      * 
@@ -20,6 +21,10 @@ public class MyWorld extends World
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(600, 480, 1);  
+        player = new Player(); 
+        addObject(player, 155, 20);
+        Mouse mouse = new Mouse(); 
+        addObject(mouse, 90, 300);
         background = new GreenfootImage(600,480);  
         background.setColor(Color.BLACK);
         background.fillRect(0,0, 600, 480);  
@@ -31,10 +36,9 @@ public class MyWorld extends World
         brickRect(0, 480 -(24*4), 3, 4);   
         brickRows(24*3, 480-24, 23);
         brickRect(600-(24*3), 480-(24*4), 3, 3); 
-        Mouse mouse = new Mouse(); 
-        addObject(mouse, 90, 300);
-        Player player = new Player(); 
-        addObject(player, 155, 20);
+        
+        ladderColumns(155, 200, 7); 
+         ladderColumns(100, 200, 7); 
         barRows(getWidth()/2, getHeight()/2, 3);  
         ladderColumns(177, 40, 9);
     } 

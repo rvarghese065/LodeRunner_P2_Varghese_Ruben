@@ -18,10 +18,16 @@ public class Mouse extends Actor
     GreenfootImage run4 = new GreenfootImage("player_run_03.png");   
     GreenfootImage leftRun4 = new GreenfootImage("player_run_03.png"); 
     GreenfootImage fall = new GreenfootImage("player_fall.png");  
-
+    GreenfootImage ladder1 = new GreenfootImage("player_climb_ladder.png");
+    GreenfootImage ladder2 = new GreenfootImage("player_on_ladder_bottom.png"); 
     int run =0; 
     int leftRun =0; 
-    Player player; 
+    boolean touchingBelowLadder = false;   
+    boolean touchingAboveLadder =false;  
+    boolean touchingBar = false; 
+    boolean onLadder =false; 
+    int ladderClimb =0; 
+    Ladder ladder;
     public Mouse(){
         leftRun1.mirrorHorizontally(); 
         leftRun2.mirrorHorizontally();
@@ -29,41 +35,153 @@ public class Mouse extends Actor
         leftRun4.mirrorHorizontally(); 
 
     } 
+
     public void act()
-    {  
-        if(!isTouching(Wall.class)){ 
+    {   
+        MouseInfo mouse = Greenfoot.getMouseInfo(); 
+        if(isTouching(Ladder.class)&& getOneObjectAtOffset(0, -8, Ladder.class) ==ladder){
+            touchingBelowLadder =true;  
+
+        } 
+        if(isTouching(Ladder.class) && getOneObjectAtOffset(0,8, Ladder.class) ==ladder){
+            touchingAboveLadder = true; 
+        } 
+
+        if(!isTouching(Wall.class) && !isTouching(Ladder.class)){ 
             this.setRotation(90);
             move(2);
             this.setRotation(0); 
             setImage(fall);
 
-        }
-        MouseInfo mouse = Greenfoot.getMouseInfo(); 
-        if(mouse != null){
-            if(player.getX()<mouse.getX()){
+        }else if(Greenfoot.getMouseInfo() != null){ 
+            if(getY()>Greenfoot.getMouseInfo().getY() && touchingAboveLadder && onLadder ==false){
+                Ladder ladder = (Ladder)getOneObjectAtOffset(0,8, Ladder.class);  
+                if( getOneObjectAtOffset(0,8, Ladder.class) != null){ 
+                    setLocation(ladder.getX(), ladder.getY()); 
+                }
+                onLadder =true; 
+            }else if( touchingAboveLadder && !isTouching(Ladder.class)){ 
+                onLadder =false;
+                touchingAboveLadder =false; 
+            } 
+            if(getY()>Greenfoot.getMouseInfo().getY() && isTouching(Ladder.class) && onLadder ==true){
+                this.setRotation(270); 
+                if(ladderClimb ==0){
+                    setImage(ladder1); 
+                    ladderClimb++;
+                }else{
+                    setImage(ladder2); 
+                    ladderClimb=0;
+                } 
+                if(isTouching(Wall.class)==false){
+                    move(2); 
+                }
+                this.setRotation(0);
+            }else if(onLadder ==true && !isTouching(Ladder.class)){
+                onLadder =false; 
+                touchingAboveLadder =false;
+                touchingBelowLadder =false; 
+            } 
+            if(onLadder ==true && getY()<Greenfoot.getMouseInfo().getY() && isTouching(Ladder.class)){ 
+                this.setRotation(90); 
+
+                if(ladderClimb == 0){
+                    setImage(ladder1); 
+                    ladderClimb++; 
+                }else{
+                    setImage(ladder2); 
+                    ladderClimb =0; 
+                } 
+                if(!isTouching(Wall.class)){
+                    move(2); 
+                }
+                this.setRotation(0);
+
+            }else if (onLadder ==true && !isTouching(Ladder.class)){
+                onLadder =false; 
+                touchingBelowLadder =false;
+            }  
+            if(touchingAboveLadder && getY()<Greenfoot.getMouseInfo().getY() && onLadder ==false){
+                Ladder ladder = (Ladder)getOneObjectAtOffset(0,8, Ladder.class);  
+                if( getOneObjectAtOffset(0,2, Ladder.class) != null){ 
+                    setLocation(ladder.getX(), ladder.getY()); 
+                }
+                onLadder =true; 
+
+            }else if( touchingAboveLadder && !isTouching(Ladder.class)){
+                onLadder =false;
+                touchingAboveLadder =false; 
+            }
+            if(getX()>Greenfoot.getMouseInfo().getX() && onLadder ==false){
+                this.setRotation(180);
                 if(leftRun==0){
-                    setImage(leftRun1); 
+                    setImage(leftRun1);
+                    leftRun++;
                 }else if(run==1){
                     setImage(leftRun2);
+                    leftRun++; 
                 }else if(run==2){
                     setImage(leftRun3);
+                    leftRun++;
                 }else{
                     setImage(leftRun4);
-                }
+                    leftRun =0; 
+                } 
+                move(2);  
+                this.setRotation(0); 
+            }else if(onLadder==true && getY()==Greenfoot.getMouseInfo().getY() && getX()>Greenfoot.getMouseInfo().getX()){
+                this.setRotation(180);
+                if(leftRun==0){
+                    setImage(leftRun1);
+                    leftRun++;
+                }else if(run==1){
+                    setImage(leftRun2);
+                    leftRun++; 
+                }else if(run==2){
+                    setImage(leftRun3);
+                    leftRun++;
+                }else{
+                    setImage(leftRun4);
+                    leftRun =0; 
+                } 
+                move(2);  
+                this.setRotation(0); 
+            }
+            if(getX()<Greenfoot.getMouseInfo().getX() && onLadder==false){ 
 
-            }else if(player.getX()>mouse.getX()){
                 if(run ==0){ 
                     setImage(run1); 
-
+                    run++;
                 }else if(run==1){
                     setImage(run2); 
+                    run++;
                 }else if(run==2){
                     setImage(run3); 
+                    run++; 
                 }else{
                     setImage(run4); 
+                    run=0;
                 }
+                move(2); 
+                this.setRotation(0); 
+            }else if(onLadder==true && getY()==Greenfoot.getMouseInfo().getY() && getX()<Greenfoot.getMouseInfo().getX()){
+                if(run ==0){ 
+                    setImage(run1); 
+                    run++;
+                }else if(run==1){
+                    setImage(run2); 
+                    run++;
+                }else if(run==2){
+                    setImage(run3); 
+                    run++; 
+                }else{
+                    setImage(run4); 
+                    run=0;
+                }
+                move(2); 
+                this.setRotation(0); 
 
-            } 
+            }
         }
 
     }

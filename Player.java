@@ -27,7 +27,7 @@ public class Player extends Actor
     GreenfootImage fall = new GreenfootImage("player_fall.png");  
     GreenfootImage ladder1 = new GreenfootImage("player_climb_ladder.png");
     GreenfootImage ladder2 = new GreenfootImage("player_on_ladder_bottom.png"); 
-    
+
     boolean touchingBelowLadder = false;   
     boolean touchingAboveLadder =false;  
     boolean touchingBar = false; 
@@ -40,16 +40,14 @@ public class Player extends Actor
         leftRun2.mirrorHorizontally(); 
         leftRun3.mirrorHorizontally(); 
         leftRun4.mirrorHorizontally(); 
-        
-        
+
     }
     public void act()
     { 
-         
-        
+
         if(isTouching(Ladder.class)&& getOneObjectAtOffset(0, -8, Ladder.class) ==ladder){
             touchingBelowLadder =true;  
-            
+
         } 
         if(isTouching(Ladder.class) && getOneObjectAtOffset(0,8, Ladder.class) ==ladder){
             touchingAboveLadder = true; 
@@ -60,34 +58,30 @@ public class Player extends Actor
             this.setRotation(0);  
             setImage(fall);
         }
-          
+
         if(Greenfoot.isKeyDown("left") == true &&( isTouching(Wall.class) || isTouching(Ladder.class))&& getOneObjectAtOffset(-2, 0, Wall.class) == wall){
             this.setRotation(180);  
             if(runLeft ==0){
                 setImage(leftRun1); 
                 runLeft++; 
             }else if(runLeft==1){
-                
+
                 setImage(leftRun2);
-                
+
                 runLeft++; 
             }else if(runLeft==2){
-                
+
                 setImage(leftRun3); 
-                
+
                 runLeft++; 
-                
-                
+
             }else{
-                
                 setImage(leftRun4); 
-                
                 runLeft=0; 
-                
             }
             move(2); 
             this.setRotation(0); 
-            
+
         }  
         if(Greenfoot.isKeyDown("right") == true && (isTouching(Wall.class) || isTouching(Ladder.class)) && getOneObjectAtOffset(2, 0, Wall.class) == wall){
             move(2);  
@@ -111,17 +105,17 @@ public class Player extends Actor
             int x = getOneIntersectingObject(Ladder.class).getX(); 
             System.out.println(ladder);
             if( getOneObjectAtOffset(0,-2, Ladder.class) != null){ 
-                setLocation(x, ladder.getY());
+                setLocation(ladder.getX(), ladder.getY());
             }
             onLadder=true; 
         }else if(touchingBelowLadder && !isTouching(Ladder.class) && getOneObjectAtOffset(0, -2, Ladder.class) ==null){
             touchingBelowLadder =false; 
             onLadder=false;
-            
+
         }
         if(onLadder ==true && Greenfoot.isKeyDown("down") && isTouching(Ladder.class)){ 
             this.setRotation(90); 
-            
+
             if(ladderClimb == 0){
                 setImage(ladder1); 
                 ladderClimb++; 
@@ -133,7 +127,7 @@ public class Player extends Actor
                 move(2); 
             }
             this.setRotation(0);
-            
+
         }else if (onLadder ==true && !isTouching(Ladder.class)){
             onLadder =false; 
             touchingBelowLadder =false;
@@ -141,10 +135,10 @@ public class Player extends Actor
         if(touchingAboveLadder && Greenfoot.isKeyDown("up") && onLadder ==false){
             Ladder ladder = (Ladder)getOneObjectAtOffset(0,8, Ladder.class);  
             if( getOneObjectAtOffset(0,2, Ladder.class) != null){ 
-            setLocation(ladder.getX(), ladder.getY()); 
-        }
+                setLocation(ladder.getX(), ladder.getY()); 
+            }
             onLadder =true; 
-            
+
         }else if( touchingAboveLadder && !isTouching(Ladder.class)){
             onLadder =false;
             touchingAboveLadder =false; 
@@ -159,33 +153,42 @@ public class Player extends Actor
                 ladderClimb=0;
             } 
             if(isTouching(Wall.class)==false){
-            move(2); 
-          }
+                move(2); 
+            }
             this.setRotation(0);
         }else if(onLadder ==true && !isTouching(Ladder.class)){
             onLadder =false; 
             touchingAboveLadder =false;
             touchingBelowLadder =false; 
         } 
-        
+
         if(isTouching(Bar.class)  && getOneObjectAtOffset(0,-4, Bar.class) == bar){
             Bar bar = (Bar)getOneObjectAtOffset(0,-4, Bar.class);   
-             
+
             if(bar !=null){
-            System.out.println("touching bar");
-            setLocation(bar.getX(), bar.getY()); 
-        }
+                System.out.println("touching bar");
+                setLocation(bar.getX(), bar.getY()); 
+            }
         }
         if(isTouching(Bar.class)  && getOneObjectAtOffset(0,4, Bar.class) == bar){
-        
+
         }
         if(isTouching(Bar.class)  && getOneObjectAtOffset(-4,0, Bar.class) == bar){
-        
+
         }
         if(isTouching(Bar.class)  && getOneObjectAtOffset(4,0, Bar.class) == bar){
-            
-        }
+
+        } 
+
     } 
-    
-    
+
+    public int returnX(){
+
+        return getX(); 
+    }
+
+    public int returnY(){
+        return getY(); 
+    }
+
 }
