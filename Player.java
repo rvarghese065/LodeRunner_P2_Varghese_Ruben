@@ -47,7 +47,7 @@ public class Player extends Multiplayer
 
         isTouchingBelowLadder();
         isTouchingAboveLadder();
-        int direction = getCommand(); 
+        int direction = getCommand();  
         if(!touchingBelowLadder && (!isTouching(Wall.class)) && !(isTouching(Bar.class))){
             this.setRotation(90); 
             move(2); 
@@ -187,6 +187,7 @@ public class Player extends Multiplayer
         return getY(); 
     }
     @Override 
+    
     public int getCommand(){
         
         if(Greenfoot.isKeyDown("up")){

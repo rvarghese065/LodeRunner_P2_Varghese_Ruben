@@ -17,7 +17,7 @@ public class Enemy extends Multiplayer
     public void act()
     {
         int direction =getCommand(); 
-        System.out.println(direction); 
+        //System.out.println(direction); 
     } 
     @Override
     public int getCommand(){
