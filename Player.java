@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Player extends Actor
+public class Player extends Multiplayer
 {
     /**
      * Act - do whatever the Player wants to do. This method is called whenever
@@ -45,13 +45,9 @@ public class Player extends Actor
     public void act()
     { 
 
-        if(isTouching(Ladder.class)&& getOneObjectAtOffset(0, -8, Ladder.class) ==ladder){
-            touchingBelowLadder =true;  
-
-        } 
-        if(isTouching(Ladder.class) && getOneObjectAtOffset(0,8, Ladder.class) ==ladder){
-            touchingAboveLadder = true; 
-        }
+        isTouchingBelowLadder();
+        isTouchingAboveLadder();
+        int direction = getCommand(); 
         if(!touchingBelowLadder && (!isTouching(Wall.class)) && !(isTouching(Bar.class))){
             this.setRotation(90); 
             move(2); 
@@ -60,7 +56,8 @@ public class Player extends Actor
         }
 
         if(Greenfoot.isKeyDown("left") == true &&( isTouching(Wall.class) || isTouching(Ladder.class))&& getOneObjectAtOffset(-2, 0, Wall.class) == wall){
-            this.setRotation(180);  
+            this.setRotation(180); 
+            move(2); 
             if(runLeft ==0){
                 setImage(leftRun1); 
                 runLeft++; 
@@ -70,16 +67,13 @@ public class Player extends Actor
 
                 runLeft++; 
             }else if(runLeft==2){
-
-                setImage(leftRun3); 
-
+                setImage(leftRun3);
                 runLeft++; 
-
             }else{
                 setImage(leftRun4); 
                 runLeft=0; 
             }
-            move(2); 
+            
             this.setRotation(0); 
 
         }  
@@ -100,21 +94,23 @@ public class Player extends Actor
             }
 
         }  
-        if(touchingBelowLadder && Greenfoot.isKeyDown("down") && onLadder ==false ){
-            Ladder ladder = (Ladder)getOneObjectAtOffset(0,-8, Ladder.class); 
+        if(touchingBelowLadder && Greenfoot.isKeyDown("down") && onLadder ==false && isTouching(Ladder.class )){
+            Ladder ladder = (Ladder)getOneObjectAtOffset(0,-8, Ladder.class);  
+            
             int x = getOneIntersectingObject(Ladder.class).getX(); 
             System.out.println(ladder);
             if( getOneObjectAtOffset(0,-2, Ladder.class) != null){ 
-                setLocation(ladder.getX(), ladder.getY());
+                setLocation(x, getY()-2);
             }
-            onLadder=true; 
+            onLadder=true;  
+            
         }else if(touchingBelowLadder && !isTouching(Ladder.class) && getOneObjectAtOffset(0, -2, Ladder.class) ==null){
             touchingBelowLadder =false; 
             onLadder=false;
 
         }
         if(onLadder ==true && Greenfoot.isKeyDown("down") && isTouching(Ladder.class)){ 
-            this.setRotation(90); 
+             
 
             if(ladderClimb == 0){
                 setImage(ladder1); 
@@ -124,9 +120,9 @@ public class Player extends Actor
                 ladderClimb =0; 
             } 
             if(!isTouching(Wall.class)){
-                move(2); 
+                setLocation(getX(), getY()+2); 
             }
-            this.setRotation(0);
+            
 
         }else if (onLadder ==true && !isTouching(Ladder.class)){
             onLadder =false; 
@@ -139,7 +135,7 @@ public class Player extends Actor
             }
             onLadder =true; 
 
-        }else if( touchingAboveLadder && !isTouching(Ladder.class)){
+        }else if(touchingAboveLadder && !isTouching(Ladder.class)){
             onLadder =false;
             touchingAboveLadder =false; 
         }
@@ -181,7 +177,7 @@ public class Player extends Actor
         } 
 
     } 
-
+    
     public int returnX(){
 
         return getX(); 
@@ -190,5 +186,21 @@ public class Player extends Actor
     public int returnY(){
         return getY(); 
     }
-
+    @Override 
+    public int getCommand(){
+        
+        if(Greenfoot.isKeyDown("up")){
+             return 1;
+            
+        
+        }else if(Greenfoot.isKeyDown("right")){
+            return 2; 
+        }else if(Greenfoot.isKeyDown("down")){
+            return 3; 
+        }else{
+            return 4; 
+        }
+        
+        
+    }
 }

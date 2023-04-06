@@ -7,7 +7,7 @@ import greenfoot.MouseInfo;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Mouse extends Actor
+public class Mouse extends Multiplayer
 {
     GreenfootImage run1 = new GreenfootImage("player_run_00.png");  
     GreenfootImage leftRun1 = new GreenfootImage("player_run_00.png");
@@ -27,7 +27,8 @@ public class Mouse extends Actor
     boolean touchingBar = false; 
     boolean onLadder =false; 
     int ladderClimb =0; 
-    Ladder ladder;
+    Ladder ladder; 
+    Wall wall; 
     public Mouse(){
         leftRun1.mirrorHorizontally(); 
         leftRun2.mirrorHorizontally();
@@ -39,13 +40,8 @@ public class Mouse extends Actor
     public void act()
     {   
         MouseInfo mouse = Greenfoot.getMouseInfo(); 
-        if(isTouching(Ladder.class)&& getOneObjectAtOffset(0, -8, Ladder.class) ==ladder){
-            touchingBelowLadder =true;  
-
-        } 
-        if(isTouching(Ladder.class) && getOneObjectAtOffset(0,8, Ladder.class) ==ladder){
-            touchingAboveLadder = true; 
-        } 
+        isTouchingBelowLadder(); 
+        isTouchingAboveLadder(); 
 
         if(!isTouching(Wall.class) && !isTouching(Ladder.class)){ 
             this.setRotation(90);
@@ -112,7 +108,7 @@ public class Mouse extends Actor
                 onLadder =false;
                 touchingAboveLadder =false; 
             }
-            if(getX()>Greenfoot.getMouseInfo().getX() && onLadder ==false){
+            if(getX()>Greenfoot.getMouseInfo().getX() && onLadder ==false && getOneObjectAtOffset(-8, 0, Wall.class) == wall){
                 this.setRotation(180);
                 if(leftRun==0){
                     setImage(leftRun1);
@@ -127,7 +123,9 @@ public class Mouse extends Actor
                     setImage(leftRun4);
                     leftRun =0; 
                 } 
-                move(2);  
+                
+                    move(2); 
+                
                 this.setRotation(0); 
             }else if(onLadder==true && getY()==Greenfoot.getMouseInfo().getY() && getX()>Greenfoot.getMouseInfo().getX()){
                 this.setRotation(180);
@@ -147,7 +145,7 @@ public class Mouse extends Actor
                 move(2);  
                 this.setRotation(0); 
             }
-            if(getX()<Greenfoot.getMouseInfo().getX() && onLadder==false){ 
+            if(getX()<Greenfoot.getMouseInfo().getX() && onLadder==false&& getOneObjectAtOffset(8, 0, Wall.class) == wall ){ 
 
                 if(run ==0){ 
                     setImage(run1); 
@@ -185,4 +183,20 @@ public class Mouse extends Actor
         }
 
     }
+    public void isTouchingBelowLadder(){
+        if(isTouching(Ladder.class)&& getOneObjectAtOffset(0, -8, Ladder.class) ==ladder){
+            touchingBelowLadder =true;  
+
+        }
+        
+        
+    } 
+    public void isTouchingAboveLadder(){
+        if(isTouching(Ladder.class) && getOneObjectAtOffset(0,8, Ladder.class) ==ladder){
+            touchingAboveLadder = true; 
+        } 
+    }
 }
+ 
+
+

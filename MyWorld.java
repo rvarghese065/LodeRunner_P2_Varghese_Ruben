@@ -12,7 +12,8 @@ public class MyWorld extends World
      Wall wall;  
      Ladder ladder; 
      Bar bar;
-     Player player; 
+     Player player;  
+     Enemy enemy;
     /**
      * Constructor for objects of class MyWorld.
      * 
@@ -22,7 +23,9 @@ public class MyWorld extends World
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(600, 480, 1);  
         player = new Player(); 
-        addObject(player, 155, 20);
+        addObject(player, 155, 20); 
+        enemy = new Enemy(); 
+        addObject(enemy, getWidth()/2, getHeight()-50);  
         Mouse mouse = new Mouse(); 
         addObject(mouse, 90, 300);
         background = new GreenfootImage(600,480);  
