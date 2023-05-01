@@ -7,7 +7,7 @@ import java.util.List;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Enemy extends Multiplayer
+public class Enemy extends Person
 {
     
     /**
@@ -17,7 +17,7 @@ public class Enemy extends Multiplayer
     public void act()
     {
         int direction =getCommand(); 
-        System.out.println(direction); 
+        //System.out.println(direction); 
     } 
     @Override
     public int getCommand(){
@@ -35,6 +35,6 @@ public class Enemy extends Multiplayer
         if(player.get(0).getX()-getX()<0){
              return 4; 
         }
-        return 0; 
+        return 0;  
     }
 }

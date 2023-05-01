@@ -7,7 +7,7 @@ import greenfoot.MouseInfo;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Mouse extends Multiplayer
+public class Mouse extends Player
 {
     GreenfootImage run1 = new GreenfootImage("player_run_00.png");  
     GreenfootImage leftRun1 = new GreenfootImage("player_run_00.png");

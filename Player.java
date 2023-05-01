@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Player extends Multiplayer
+public class Player extends Person
 {
     /**
      * Act - do whatever the Player wants to do. This method is called whenever
@@ -44,11 +44,19 @@ public class Player extends Multiplayer
     }
     public void act()
     { 
+        if((onLadder==true) && isTouching(Ladder.class)==false){
+            onLadder=false;
+        }
+         if(isTouching(Ladder.class)&& getOneObjectAtOffset(0, -8, Ladder.class) ==ladder){
+            touchingBelowLadder =true;  
 
-        isTouchingBelowLadder();
-        isTouchingAboveLadder();
+        }
+        if(isTouching(Ladder.class) && getOneObjectAtOffset(0,8, Ladder.class) ==ladder){
+            touchingAboveLadder = true; 
+            
+        }
         int direction = getCommand(); 
-        if(!touchingBelowLadder && (!isTouching(Wall.class)) && !(isTouching(Bar.class))){
+        if(!touchingBelowLadder && (!isTouching(Wall.class)) && !(isTouching(Bar.class)) &&(!isTouching(Ladder.class))){
             this.setRotation(90); 
             move(2); 
             this.setRotation(0);  
@@ -95,7 +103,7 @@ public class Player extends Multiplayer
 
         }  
         if(touchingBelowLadder && Greenfoot.isKeyDown("down") && onLadder ==false && isTouching(Ladder.class )){
-            Ladder ladder = (Ladder)getOneObjectAtOffset(0,-8, Ladder.class);  
+            
             
             int x = getOneIntersectingObject(Ladder.class).getX(); 
             System.out.println(ladder);
@@ -129,9 +137,9 @@ public class Player extends Multiplayer
             touchingBelowLadder =false;
         }  
         if(touchingAboveLadder && Greenfoot.isKeyDown("up") && onLadder ==false){
-            Ladder ladder = (Ladder)getOneObjectAtOffset(0,8, Ladder.class);  
+            int x = getOneIntersectingObject(Ladder.class).getX(); 
             if( getOneObjectAtOffset(0,2, Ladder.class) != null){ 
-                setLocation(ladder.getX(), ladder.getY()); 
+                setLocation(x, ladder.getY()); 
             }
             onLadder =true; 
 

@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Multiplayer extends Actor
+public class Person extends Actor
 {
     Wall wall;  
     Ladder ladder; 
@@ -54,4 +54,8 @@ public class Multiplayer extends Actor
     public int getCommand(){
         return 3; 
     }
+     public void run(){
+        
+        
+        }
 }
